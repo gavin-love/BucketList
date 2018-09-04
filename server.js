@@ -30,3 +30,13 @@ app.post('/api/v1/bucket_lists', (req, resp) => {
     });
 });
 
+app.get('/api/v1/bucket_lists', (req, resp) => {
+  database('bucket_list').select()
+    .then(bucketLists => {
+      return res.status(200).json(bucketLists);
+    })
+    .catch(error => {
+      return res.status(500).json({ error })
+    })
+})
+
