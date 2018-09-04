@@ -12,7 +12,7 @@ app.set('port', process.env.PORT || 3000);
 
 app.use(express.static('public'));
 
-app.post('/api/v1/bucket_lists', (req, resp) => {
+app.post('/api/v1/bucketlists', (req, resp) => {
   const bucketList = req.body;
 
   for (let requiredParameter of ['title', 'description']) {
@@ -24,8 +24,8 @@ app.post('/api/v1/bucket_lists', (req, resp) => {
   };
 
   database('bucket_list').insert(bucketList, 'id')
-    .then(bucket_list => {
-      return resp.status(201).json({ id: bucket_list[0] });
+    .then(bucketList => {
+      return resp.status(201).json({ id: bucketList[0] });
     })
     .catch(error => {
       return resp.status(500).json({ error });
