@@ -24,8 +24,8 @@ app.post('/api/v1/bucketlists', (req, resp) => {
   };
 
   database('bucket_list').insert(bucketList, 'id')
-    .then(bucketList => {
-      return resp.status(201).json({ id: bucketList[0] });
+    .then(card => {
+      return resp.status(201).json({ id: card[0] });
     })
     .catch(error => {
       return resp.status(500).json({ error });

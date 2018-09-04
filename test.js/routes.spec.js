@@ -26,5 +26,18 @@ describe('/api/v1/bucket_list', () => {
       })
   })
 
-  it('should insert a new bucket list when a POST request is made')
+  it('should insert a new bucket list when a POST request is made', (done) => {
+    chai.request(server)
+      .post('/api/v1/bucketlists')
+      .send({
+        title: 'china',
+        description: 'far'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.should.be.json;
+        response.body.should.have.property('id')
+        done();
+      });
+  });
 });
