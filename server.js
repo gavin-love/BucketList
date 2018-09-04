@@ -43,7 +43,7 @@ app.get('/api/v1/bucketlists', (req, resp) => {
 });
 
 app.delete('/api/v1/bucketlists/:title', (req, resp) => {
-  const title = request.params.title;
+  const title = req.params.title;
 
   database('bucket_list').where('title', title).select().del()
     .then(bucketList => {

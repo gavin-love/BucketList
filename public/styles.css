@@ -6,7 +6,7 @@ html, body {
   width: 100%;
 }
 
-main {
+main, .display_card {
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -18,4 +18,20 @@ main {
 form {
   display: flex;
   flex-direction: column;
+}
+
+.title, .description, .save {
+  width: 100%;
+}
+
+.card {
+  width: 50%;
+  border: 1px solid black;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.title_button {
+  display: flex;
+  justify-content: space-between;
 }
