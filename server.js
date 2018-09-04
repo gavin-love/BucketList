@@ -10,5 +10,23 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser).urlencoded({ extended: true });
 
+app.post('/api/v1/bucket_lists', (req, resp) => {
+  const bucketList = req.body;
 
+  for (let requiredParameter of ['title', 'description']) {
+    if (!bucketList[requiredParameter]) {
+      return Response.status(422).json({
+        error: `Your bucket list is missing a required parameter of "${requiredParameter}"`
+      });
+    };
+  };
+
+  database('bucket_list').insert(bucketList, 'id')
+    .then(bucket_list => {
+      return resp.status(201).json({ id: bucket_list[0] })
+    })
+    .catch(error => {
+      return resp.status(500).json({ error })
+    });
+});
 
