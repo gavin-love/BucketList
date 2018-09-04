@@ -11,6 +11,16 @@ module.exports = {
     },
     useNullAsDefault: true
   },
+  test: {
+    connection: 'postgres://localhost/bucket_list_test',
+    migrations: {
+      directory: './db/migrations'
+    },
+    seeds: {
+      directory: './db/seeds/dev'
+    },
+    useNullAsDefault: true
+  },
 
   staging: {
     client: 'postgresql',
