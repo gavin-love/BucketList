@@ -32,7 +32,7 @@ app.post('/api/v1/bucketlists', (req, resp) => {
     });
 });
 
-app.get('/api/v1/bucket_lists', (req, resp) => {
+app.get('/api/v1/bucketlists', (req, resp) => {
   database('bucket_list').select()
     .then(bucketLists => {
       return resp.status(200).json(bucketLists);
@@ -42,7 +42,7 @@ app.get('/api/v1/bucket_lists', (req, resp) => {
     });
 });
 
-app.delete('/api/v1/bucket_lists/:title', (req, resp) => {
+app.delete('/api/v1/bucketlists/:title', (req, resp) => {
   const title = request.params.title;
 
   database('bucket_list').where('title', title).select().del()

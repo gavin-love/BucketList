@@ -1,13 +1,38 @@
+const retrieveAllBucketLists = () => {
+  $('.display_card').empty();
+
+  const url = '/api/v1/bucketlists';
+
+  fetch(url)
+    .then(resp => {
+      return resp.json()
+    })
+    .then(bucketList => {
+      bucketList.map(card => {
+        $('.display_card').prepend(`
+          <div class="title_button">
+            <h3 class="display_title">${card.title}</h3>
+            <button class="delete">Delete</button>
+          </div>
+          <p class="display_description">${card.description}</p>
+        `)
+      })
+    })
+}
+
 const saveBucketList = () => {
   event.preventDefault();
 
-  const title = document.querySelector('.title').value;
-  const description = document.querySelector('.description').value;
-  const displayTitle = document.querySelector('.display_title');
-  const displayDescription = document.querySelector('.display_description');
+  const title = $('.title').val();
+  const description = $('.description').val();
 
-  displayTitle.innerText = title;
-  displayDescription.innerText = description;
+  $('.display_card').prepend(`
+          <div class="title_button">
+            <h3 class="display_title">${title}</h3>
+            <button class="delete">Delete</button>
+          </div>
+          <p class="display_description">${description}</p>
+        `)
 
   fetch('/api/v1/bucketlists', {
     method: 'POST',
@@ -19,7 +44,10 @@ const saveBucketList = () => {
   })
     .then(resp => {
       return resp.json()
-    })
+    });
+  $('.title').val('');
+  $('.description').val('');
 }
 
-document.querySelector('.save').addEventListener('click', saveBucketList);
+$('.save').on('click', saveBucketList);
+$(window).ready(retrieveAllBucketLists());
