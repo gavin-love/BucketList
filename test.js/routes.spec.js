@@ -29,10 +29,11 @@ describe('/api/v1/bucket_list', () => {
   it('should insert a new bucket list when a POST request is made', (done) => {
     chai.request(server)
       .post('/api/v1/bucketlists')
-      .send({
+      .send(JSON.stringify({
+        id: 1,
         title: 'china',
         description: 'far'
-      })
+      }))
       .end((error, response) => {
         response.should.have.status(201);
         response.should.be.json;
@@ -44,9 +45,9 @@ describe('/api/v1/bucket_list', () => {
   it('throws an error if request params are missing when a POST request is made', (done) => {
     chai.request(server)
       .post('/api/v1/bucketlists')
-      .send({
+      .send(JSON.stringify({
         title: 'failed'
-      })
+      }))
       .end((error, response) => {
         response.should.have.status(422);
         response.should.be.json;
