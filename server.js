@@ -1,14 +1,16 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const environment = process.end.NODE_env || 'development';
+const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
-app.set('port', process.env.PORT || 3000);
-app.use(express.static('public'));
 app.use(bodyParser.json());
-app.use(bodyParser).urlencoded({ extended: true });
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.set('port', process.env.PORT || 3000);
+
+app.use(express.static('public'));
 
 app.post('/api/v1/bucket_lists', (req, resp) => {
   const bucketList = req.body;
@@ -54,5 +56,9 @@ app.delete('/api/v1/bucket_lists/:title', (req, resp) => {
     .catch(error => {
       return resp.status(500).json({ error });
     });
+});
+
+app.listen(app.get('port'), () => {
+  console.log(`you are listening on ${app.get('port')}`);
 });
 

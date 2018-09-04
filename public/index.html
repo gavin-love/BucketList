@@ -5,11 +5,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="styles.css">
   <title>Document</title>
 </head>
 
 <body>
-
+  <main>
+    <h1>Your Bucket List</h1>
+    <form>
+      <input type="text" placeholder="title" class="title" />
+      <input type="text" placeholder="description" class="description" />
+      <button class="save">Add to List!</button>
+    </form>
+  </main>
+  <hr>
+  <section class="display_card">
+    <div class="title_button">
+      <h3 class="display_title"></h3>
+      <button class="delete"></button>
+    </div>
+    <p class="display_description"></p>
+  </section>
+  <script src="script.js"></script>
 </body>
 
 </html>
