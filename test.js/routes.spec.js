@@ -40,4 +40,36 @@ describe('/api/v1/bucket_list', () => {
         done();
       });
   });
+
+  it('throws an error if request params are missing when a POST request is made', (done) => {
+    chai.request(server)
+      .post('/api/v1/bucketlists')
+      .send({
+        title: 'failed'
+      })
+      .end((error, response) => {
+        response.should.have.status(422);
+        response.should.be.json;
+        done();
+      });
+  });
+
+  it('should delete a card from the bucket list when a DELETE request is made', (done) => {
+    chai.request(server)
+      .delete('/api/v1/bucketlists/delete')
+      .end((error, response) => {
+        response.should.have.status(200);
+        done();
+      });
+  });
+
+  it('throws an error if title does not exist when a DELETE request is made', (done) => {
+    chai.request(server)
+      .post('/api/v1/bucketlists/nope')
+      .end((error, response) => {
+        response.should.have.status(404);
+        response.should.be.json;
+        done();
+      });
+  });
 });
