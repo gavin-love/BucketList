@@ -12,6 +12,7 @@ module.exports = {
     useNullAsDefault: true
   },
   test: {
+    client: 'pg',
     connection: 'postgres://localhost/bucket_list_test',
     migrations: {
       directory: './db/migrations'

@@ -62,3 +62,5 @@ app.listen(app.get('port'), () => {
   console.log(`you are listening on ${app.get('port')}`);
 });
 
+module.exports = app;
+
