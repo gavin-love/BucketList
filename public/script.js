@@ -1,7 +1,7 @@
 const retrieveAllBucketLists = () => {
   $('.display_card').empty();
 
-  const url = '/api/v1/bucketlists';
+  const url = '/api/v1/items';
 
   fetch(url)
     .then(resp => {
@@ -10,7 +10,7 @@ const retrieveAllBucketLists = () => {
     .then(bucketList => {
       bucketList.map(card => {
         $('.display_card').prepend(`
-          <article class="card">
+          <article id="${card.id}" class="card">
             <div class="title_button">
               <h3 class="display_title">${card.title}</h3>
               <button class="delete">Delete</button>
@@ -28,8 +28,23 @@ const saveBucketList = () => {
   const title = $('.title').val();
   const description = $('.description').val();
 
-  $('.display_card').prepend(`
-      <article class="card">
+  if (!title || !description) {
+    return;
+  }
+
+  fetch('/api/v1/items', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title,
+      description
+    })
+  }).then(response => {
+    return response.json();
+  })
+    .then(result => {
+      $('.display_card').prepend(`
+      <article id="${result.id}"class="card">
         <div class="title_button">
           <h3 class="display_title">${title}</h3>
           <button class="delete">Delete</button>
@@ -37,17 +52,6 @@ const saveBucketList = () => {
         <p class="display_description">${description}</p>
       </article>
         `)
-
-  fetch('/api/v1/bucketlists', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title,
-      description
-    })
-  })
-    .then(resp => {
-      return resp.json();
     });
   $('.title').val('');
   $('.description').val('');
@@ -55,13 +59,11 @@ const saveBucketList = () => {
 
 const deleteCardFromBucketList = (event) => {
   event.preventDefault();
-  const title = event.target.closest('.title_button').children[0].innerText;
-  fetch(`/api/v1/bucketlists/${title}`, {
+  const id = $(event.target).parent().parent().attr('id');
+
+  fetch(`/api/v1/items/${id}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title
-    })
   })
     .then(resp => {
       return resp.json();

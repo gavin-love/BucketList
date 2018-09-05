@@ -12,18 +12,17 @@ app.set('port', process.env.PORT || 3000);
 
 app.use(express.static('public'));
 
-app.post('/api/v1/bucketlists', (req, resp) => {
-  const bucketList = req.body;
+app.post('/api/v1/items', (req, resp) => {
+  const item = req.body;
 
-  for (let requiredParameter of ['title', 'description']) {
-    if (!bucketList[requiredParameter]) {
-      return resp.status(422).json({
-        error: `Your bucket list is missing a required parameter of "${requiredParameter}"`
-      });
-    };
+  if (!item.title || !item.description) {
+    return resp.status(422).json({
+      error: `Your bucket list is missing a required parameter of"`
+    });
   };
 
-  database('bucket_list').insert(bucketList, 'id')
+
+  database('bucket_list').insert(item, 'id')
     .then(card => {
       return resp.status(201).json({ id: card[0] });
     })
@@ -32,25 +31,25 @@ app.post('/api/v1/bucketlists', (req, resp) => {
     });
 });
 
-app.get('/api/v1/bucketlists', (req, resp) => {
+app.get('/api/v1/items', (req, resp) => {
   database('bucket_list').select()
-    .then(bucketLists => {
-      return resp.status(200).json(bucketLists);
+    .then(item => {
+      return resp.status(200).json(item);
     })
     .catch(error => {
       return resp.status(500).json({ error });
     });
 });
 
-app.delete('/api/v1/bucketlists/:title', (req, resp) => {
-  const title = req.params.title;
+app.delete('/api/v1/items/:id', (req, resp) => {
+  const id = req.params.id;
 
-  database('bucket_list').where('title', title).select().del()
-    .then(bucketList => {
-      if (bucketList) {
-        return resp.status(200).json('Bucket list was deleted');
+  database('bucket_list').where('id', id).select().del()
+    .then(item => {
+      if (item) {
+        return resp.status(200).json('Item was deleted');
       } else {
-        return resp.status(404).json('The bucket list you are looking for does not exist in the database');
+        return resp.status(404).json('Item you are looking for does not exist in the database');
       };
     })
     .catch(error => {

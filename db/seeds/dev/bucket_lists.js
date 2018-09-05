@@ -3,7 +3,7 @@ exports.seed = function (knex, Promise) {
     .then(function () {
       return Promise.all([
         knex('bucket_list').insert([
-          { id: 1, title: 'test-title', description: 'test-description' }
+          { title: 'test-title', description: 'test-description' }
         ])
       ])
     });

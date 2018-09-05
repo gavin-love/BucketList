@@ -17,7 +17,7 @@ describe('/api/v1/bucket_list', () => {
 
   it('should return a list of bucket lists when a GET request is made', (done) => {
     chai.request(server)
-      .get('/api/v1/bucketlists')
+      .get('/api/v1/items')
       .end((error, response) => {
         response.should.have.status(200);
         response.should.be.json;
@@ -28,12 +28,11 @@ describe('/api/v1/bucket_list', () => {
 
   it('should insert a new bucket list when a POST request is made', (done) => {
     chai.request(server)
-      .post('/api/v1/bucketlists')
-      .send(JSON.stringify({
-        id: 1,
+      .post('/api/v1/items')
+      .send({
         title: 'china',
         description: 'far'
-      }))
+      })
       .end((error, response) => {
         response.should.have.status(201);
         response.should.be.json;
@@ -44,10 +43,10 @@ describe('/api/v1/bucket_list', () => {
 
   it('throws an error if request params are missing when a POST request is made', (done) => {
     chai.request(server)
-      .post('/api/v1/bucketlists')
-      .send(JSON.stringify({
+      .post('/api/v1/items')
+      .send({
         title: 'failed'
-      }))
+      })
       .end((error, response) => {
         response.should.have.status(422);
         response.should.be.json;
@@ -55,9 +54,9 @@ describe('/api/v1/bucket_list', () => {
       });
   });
 
-  it('should delete a card from the bucket list when a DELETE request is made', (done) => {
+  it.only('should delete a card from the bucket list when a DELETE request is made', (done) => {
     chai.request(server)
-      .delete('/api/v1/bucketlists/delete')
+      .delete('/api/v1/items/1')
       .end((error, response) => {
         response.should.have.status(200);
         done();
@@ -66,7 +65,7 @@ describe('/api/v1/bucket_list', () => {
 
   it('throws an error if title does not exist when a DELETE request is made', (done) => {
     chai.request(server)
-      .post('/api/v1/bucketlists/nope')
+      .post('/api/v1/items/nope')
       .end((error, response) => {
         response.should.have.status(404);
         response.should.be.json;
