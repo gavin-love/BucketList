@@ -15,13 +15,25 @@ describe('/api/v1/bucket_list', () => {
       .then(() => done());
   });
 
-  it('should return a list of bucket lists when a GET request is made', (done) => {
+  it('should return a list of items when a GET request is made', (done) => {
     chai.request(server)
       .get('/api/v1/items')
       .end((error, response) => {
+        should.equal(error, null);
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a('array');
+        response.body.should.have.length(1);
+        response.body[0].should.be.a('object');
+        response.body[0].should.have.property('id');
+        response.body[0].should.have.property('title');
+        response.body[0].should.have.property('description');
+        response.body[0].id.should.be.a('number');
+        response.body[0].title.should.be.a('string');
+        response.body[0].description.should.be.a('string');
+        response.body[0].id.should.equal(1);
+        response.body[0].title.should.equal('test-title');
+        response.body[0].description.should.equal('test-description');
         done();
       })
   })
@@ -34,9 +46,13 @@ describe('/api/v1/bucket_list', () => {
         description: 'far'
       })
       .end((error, response) => {
+        should.equal(error, null);
         response.should.have.status(201);
         response.should.be.json;
-        response.body.should.have.property('id')
+        response.body.should.be.a('object');
+        response.body.should.have.property('id');
+        response.body.id.should.be.a('number');
+        response.body.id.should.equal(2);
         done();
       });
   });
@@ -50,25 +66,30 @@ describe('/api/v1/bucket_list', () => {
       .end((error, response) => {
         response.should.have.status(422);
         response.should.be.json;
+        response.body.should.be.a('object');
         done();
       });
   });
 
-  it.only('should delete a card from the bucket list when a DELETE request is made', (done) => {
+  it('should delete a card from the bucket list when a DELETE request is made', (done) => {
     chai.request(server)
       .delete('/api/v1/items/1')
       .end((error, response) => {
+        should.equal(error, null);
         response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('string');
         done();
       });
   });
 
   it('throws an error if title does not exist when a DELETE request is made', (done) => {
     chai.request(server)
-      .post('/api/v1/items/nope')
+      .delete('/api/v1/items/2')
       .end((error, response) => {
         response.should.have.status(404);
         response.should.be.json;
+        response.body.should.be.a('string');
         done();
       });
   });
